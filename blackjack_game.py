@@ -5,12 +5,13 @@ import time
 
 def main():
     blackjack_view.hello()
-    deck_service.init()
+    deck = entities.Deck()
+    deck_service.init(deck)
     player = entities.Player()
     dealer = entities.Dealer()
     status = True
     while status:
-        start_game(player, dealer)
+        start_game(player, dealer, deck)
         if player.debt > 3000:
             print('\nЭто конечная.. Сейчас кого-то будут убивать.')
             status = False
@@ -37,66 +38,66 @@ def pay_off_debt(player):
     if choice == 'y':
         deck_service.pay_off_debt(player)
 
-def start_game(player, dealer):
+def start_game(player, dealer, deck):
     print(f'\nБаланс: {player.balance} х.к.')
     print(f'Долг: {player.debt} х.к.')
     bet = deck_service.bet_validation(player)
-    deck_service.show_2_cards(player, dealer)
-    if player_turn(player, dealer, bet) != 'lose':
-        dealer_turn(player, dealer, bet)
+    deck_service.show_2_cards(player, dealer, deck)
+    if player_turn(player, dealer, deck, bet) != 'lose':
+        dealer_turn(player, dealer, deck, bet)
 
-def player_turn(player, dealer, bet):
+def player_turn(player, dealer, deck, bet):
     print('\nХОД ИГРОКА')
     choice = deck_service.player_choice('\nТянуть следующую карту? (y/n): ')
     while choice == 'y':
         blackjack_view.print_player_draw_card()
-        player.draw_1_cards()
+        player.draw_1_cards(deck)
         blackjack_view.print_cards_player_turn(player, dealer)
         if player.value < 21:
             choice = deck_service.player_choice('\nТянуть следующую карту? (y/n): ')
         elif player.value > 21:
-            player_lose(player, dealer, bet)
+            player_lose(player, dealer, deck, bet)
             return 'lose'
         else:
             choice = 'n'
 
-def dealer_turn(player, dealer, bet):
+def dealer_turn(player, dealer, deck, bet):
     print('\nХОД КРУПЬЕ')
     blackjack_view.print_cards_dealer_turn(player, dealer)
     while dealer.value < 17:
         blackjack_view.print_dealer_draw_card()
-        dealer.draw_1_cards()
+        dealer.draw_1_cards(deck)
         blackjack_view.print_cards_dealer_turn(player, dealer)
     if dealer.value > 21:
-        player_win(player, dealer, bet)
+        player_win(player, dealer, deck, bet)
     elif dealer.value > player.value:
-        player_lose(player, dealer, bet)
+        player_lose(player, dealer, deck, bet)
     elif dealer.value < player.value:
-        player_win(player, dealer, bet)
+        player_win(player, dealer, deck, bet)
     else:
-        draw(player, dealer)
+        draw(player, dealer, deck)
 
-def player_lose(player, dealer, bet):
+def player_lose(player, dealer, deck, bet):
     print('\nТы проиграл!')
     player.balance -= bet
     if player.debt:
         deck_service.charging_interest(player)
-    deck_service.refresh_game(player, dealer)
+    deck_service.refresh_game(player, dealer, deck)
     time.sleep(0.5)
 
-def player_win(player, dealer, bet):
+def player_win(player, dealer, deck, bet):
     print('\nТы выиграл!')
     player.balance += bet
     if player.debt:
         deck_service.charging_interest(player)
-    deck_service.refresh_game(player, dealer)
+    deck_service.refresh_game(player, dealer, deck)
     time.sleep(0.5)
 
-def draw(player, dealer):
+def draw(player, dealer, deck):
     print('\nНичья!')
     if player.debt:
         deck_service.charging_interest(player)
-    deck_service.refresh_game(player, dealer)
+    deck_service.refresh_game(player, dealer, deck)
     time.sleep(0.5)
 
 

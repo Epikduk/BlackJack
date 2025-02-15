@@ -1,9 +1,19 @@
-deck_path = 'resources/deck.txt'
-card_value_path = 'resources/card_value.txt'
-
 def read_deck():
-    deck = {}
-    with open(deck_path, 'r', encoding='utf-8') as file1, open(card_value_path, 'r', encoding='utf-8') as file2:
-        for line in file1:
-            deck[line.strip()] = int(file2.readline().strip())
+    card_values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    suits = ['крести', 'буби', 'черви', 'пики']
+    deck = []
+    for suit in suits:
+        for value in card_values:
+            card = f'{value} {suit}'
+            deck.append(card)
     return deck
+
+def read_costs(deck):
+    costs = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+    card_costs = {}
+    index = 0
+    for suits in range(4):
+        for cost in range(len(costs)):
+            card_costs[deck[index]] = costs[cost]
+            index += 1
+    return card_costs

@@ -1,38 +1,22 @@
-import random
-import deck_reader as reader
 import blackjack_view
+    
+def init(deck):
+    deck.refresh_current_deck()
 
-deck = {}
-current_deck = {}
-
-def init():
-    global deck
-    deck = reader.read_deck()
-    refresh_current_deck()
-
-def draw_cards(hand, cards):
-    global current_deck
-    draw_cards = random.sample(sorted(current_deck), k = cards)
-    delete_cards(current_deck, draw_cards)
-    for card in draw_cards:
-        hand[card] = deck[card]
+def draw_cards(hand, cards, deck):
+    for i in range(cards):
+        card = deck.current_deck.pop()
+        card_cost = deck.return_card_cost(card)
+        hand[card] = card_cost
     return hand
 
-def delete_cards(current_deck, draw_cards):
-    for card in draw_cards:
-        del current_deck[card]    
-
-def refresh_current_deck():
-    global current_deck
-    current_deck = deck.copy()
-
-def show_2_cards(player, dealer):
-    player.draw_2_cards()
-    dealer.draw_2_cards()
+def show_2_cards(player, dealer, deck):
+    player.draw_2_cards(deck)
+    dealer.draw_2_cards(deck)
     blackjack_view.print_cards_player_turn(player, dealer)
 
-def refresh_game(player, dealer):
-    refresh_current_deck()
+def refresh_game(player, dealer, deck):
+    deck.refresh_current_deck()
     player.hand = {}
     dealer.hand = {}
     player.value = 0

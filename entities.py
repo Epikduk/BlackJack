@@ -1,17 +1,19 @@
 import time
 import deck_service
+import deck_reader
+import random
 
 class Hand():
     def __init__(self):
         self.hand = {}
         self.value = 0
 
-    def draw_2_cards(self):
-        self.hand = deck_service.draw_cards(self.hand, 2)
+    def draw_2_cards(self, deck):
+        self.hand = deck_service.draw_cards(self.hand, 2, deck)
         self.update_value()
 
-    def draw_1_cards(self):
-        self.hand = deck_service.draw_cards(self.hand, 1)
+    def draw_1_cards(self, deck):
+        self.hand = deck_service.draw_cards(self.hand, 1, deck)
         self.update_value()
 
     def update_value(self):
@@ -45,3 +47,15 @@ class Player(Hand):
         super().__init__()
         self.balance = 1000
         self.debt = 0
+
+class Deck():
+    def __init__(self):
+        self.deck = deck_reader.read_deck()
+        self.card_costs = deck_reader.read_costs(self.deck)
+        
+    def refresh_current_deck(self):
+        self.current_deck = random.sample(self.deck, k = len(self.deck))
+
+    def return_card_cost(self, card):
+        self.cost = self.card_costs[card]
+        return self.cost

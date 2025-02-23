@@ -29,4 +29,4 @@ class Hand():
 
     def print_cards(self):
         time.sleep(0.5)
-        print(', '.join(self.hand.keys()) + f'. (Сумма очков: {self.value})')
+        print(', '.join([str(key) for key in self.hand.keys()]) + f'. (Сумма очков: {self.value})')

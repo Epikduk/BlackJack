@@ -11,8 +11,10 @@ def draw_cards(hand, cards, deck):
     return hand
 
 def show_2_cards(player, dealer, deck):
-    player.draw_2_cards(deck)
-    dealer.draw_2_cards(deck)
+    player.hand = draw_cards(player.hand, 2, deck)
+    player.update_value()
+    dealer.hand = draw_cards(dealer.hand, 2, deck)
+    dealer.update_value()
     blackjack_view.print_cards_player_turn(player, dealer)
 
 def refresh_game(player, dealer, deck):

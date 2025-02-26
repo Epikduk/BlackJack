@@ -20,15 +20,19 @@ def print_dealer_draw_card():
 def print_cards_player_turn(player, dealer):
     print()
     print('Карты игрока: ', end='')
-    player.print_cards()
+    time.sleep(0.5)
+    print(', '.join([str(key) for key in player.hand.keys()]) + f'. (Сумма очков: {player.value})')
     print('Карты крупье: ', end='')
-    dealer.print_start_cards()
+    time.sleep(0.5)
+    print(f'{list(dealer.hand)[0]}, ***' + f'. (Сумма очков: ***)')
     time.sleep(0.5)
 
 def print_cards_dealer_turn(player, dealer):
     print()
     print('Карты игрока: ', end='')
-    player.print_cards()
+    time.sleep(0.5)
+    print(', '.join([str(key) for key in player.hand.keys()]) + f'. (Сумма очков: {player.value})')
     print('Карты крупье: ', end='')
-    dealer.print_cards()
+    time.sleep(0.5)
+    print(', '.join([str(key) for key in dealer.hand.keys()]) + f'. (Сумма очков: {dealer.value})')
     time.sleep(0.5)

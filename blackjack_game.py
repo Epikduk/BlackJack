@@ -51,7 +51,8 @@ def player_turn(player, dealer, deck, bet):
     choice = deck_service.player_choice('\nТянуть следующую карту? (y/n): ')
     while choice == 'y':
         blackjack_view.print_player_draw_card()
-        player.draw_1_cards(deck)
+        player.hand = deck_service.draw_cards(player.hand, 1, deck)
+        player.update_value()
         blackjack_view.print_cards_player_turn(player, dealer)
         if player.value < 21:
             choice = deck_service.player_choice('\nТянуть следующую карту? (y/n): ')
@@ -66,7 +67,8 @@ def dealer_turn(player, dealer, deck, bet):
     blackjack_view.print_cards_dealer_turn(player, dealer)
     while dealer.value < 17:
         blackjack_view.print_dealer_draw_card()
-        dealer.draw_1_cards(deck)
+        dealer.hand = deck_service.draw_cards(dealer.hand, 1, deck)
+        dealer.update_value()
         blackjack_view.print_cards_dealer_turn(player, dealer)
     if dealer.value > 21:
         player_win(player, dealer, deck, bet)

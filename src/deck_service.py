@@ -1,4 +1,4 @@
-import blackjack_view
+import src.blackjack_view as blackjack_view
     
 def init(deck):
     deck.refresh_current_deck()

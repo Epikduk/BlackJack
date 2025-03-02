@@ -1,5 +1,5 @@
-import deck_service
-import blackjack_view
+import src.deck_service as deck_service
+import src.blackjack_view as blackjack_view
 import entities
 import time
 
